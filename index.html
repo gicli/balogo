@@ -571,6 +571,59 @@
       }
     }
 
+    /* 🏷️ 앱 이름 입력창 글래스 스타일 */
+    .app-name-wrap {
+      margin-bottom: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      text-align: left;
+    }
+    .app-name-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.35);
+      border: 1.5px solid var(--glass-border);
+      padding: 10px 18px;
+      border-radius: var(--radius-sm);
+      backdrop-filter: blur(10px);
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.8);
+      transition: all 0.2s ease;
+    }
+    .app-name-label:focus-within {
+      border-color: var(--primary);
+      background: rgba(255, 255, 255, 0.55);
+      box-shadow: 0 0 16px rgba(124, 77, 255, 0.2), inset 0 1px 2px #fff;
+    }
+    .app-name-label span {
+      font-size: 14px;
+      font-weight: 750;
+      color: var(--text-main);
+      white-space: nowrap;
+    }
+    .app-name-input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--primary);
+      outline: none;
+      font-family: inherit;
+    }
+    .app-name-input::placeholder {
+      color: var(--text-muted);
+      opacity: 0.6;
+      font-weight: 500;
+    }
+    .app-name-hint {
+      font-size: 12px;
+      color: var(--text-muted);
+      padding-left: 6px;
+      font-weight: 500;
+    }
+
     /* 📱 원클릭 단축 아이콘 설치 배너 & 모달 */
     .install-banner {
       display: flex;
@@ -722,8 +775,16 @@
         <button type="button" class="tab-btn" data-device="phone" aria-pressed="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 19h2"/></svg>
           휴대폰
-        </button>
       </nav>
+
+      <!-- 🏷️ 앱 이름 입력 섹션 (PWA 설치 시 바탕화면에 표시될 이름) -->
+      <div class="app-name-wrap">
+        <label for="app-name-input" class="app-name-label">
+          <span>🏷️ 내 웹/앱 이름:</span>
+          <input type="text" id="app-name-input" class="app-name-input" placeholder="예: 나의 웹사이트, 가계부, 카페" value="내 웹앱" maxlength="24" />
+        </label>
+        <span class="app-name-hint">바탕화면 단축 아이콘 밑에 표시될 이름입니다. 자유롭게 변경하세요!</span>
+      </div>
 
       <!-- 2열 워크스페이스 -->
       <section class="workspace">
@@ -1108,12 +1169,13 @@
       if (!photo) return;
       download.disabled = true;
       const conf = DEVICE_CONFIG[device] || DEVICE_CONFIG.all;
-      status.textContent = `${conf.label}용 아이콘 패키지를 생성하고 있습니다...`;
+      const appName = (document.getElementById('app-name-input')?.value || '').trim() || '내 웹앱';
+      status.textContent = `${conf.label}용 아이콘 및 PWA 설치 패키지를 생성하고 있습니다...`;
 
       try {
         const files = [];
 
-        // 1. 해당 기기 설정에 정의된 해상도만 생성
+        // 1. 해당 기기 설정에 정의된 해상도 이미지 생성
         for (const size of conf.sizes) {
           files.push(['icon-' + size + '.png', await png(size)]);
         }
@@ -1123,27 +1185,92 @@
           files.push(['icon-maskable-512.png', await png(512, true)]);
         }
 
-        // 3. 기기 맞춤형 웹 매니페스트 파일
         const enc = new TextEncoder();
+
+        // 3. 사용자가 지정한 앱 이름이 반영된 웹 매니페스트 파일
         const manifest = {
-          name: '단축이',
-          short_name: '단축이',
+          name: appName,
+          short_name: appName,
           start_url: './',
           scope: './',
           display: 'standalone',
+          orientation: 'portrait-primary',
+          background_color: '#ffffff',
+          theme_color: '#7c4dff',
           icons: conf.manifestIcons
         };
-
         files.push(['manifest.webmanifest', enc.encode(JSON.stringify(manifest, null, 2))]);
 
-        // 4. 기기 맞춤형 HTML 태그 안내
+        // 4. 어떤 웹에든 그대로 넣으면 PWA 설치 요건을 충족시키는 범용 서비스 워커 (sw.js)
+        const swScript = `// [${appName}] 단축 아이콘 및 PWA 지원 서비스 워커
+self.addEventListener('install', (e) => { self.skipWaiting(); });
+self.addEventListener('activate', (e) => { e.waitUntil(self.clients.claim()); });
+self.addEventListener('fetch', (e) => {
+  if (e.request.method !== 'GET') return;
+  e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
+});`;
+        files.push(['sw.js', enc.encode(swScript)]);
+
+        // 5. 내 웹의 <head> 안에 넣을 태그 설정
         files.push(['웹에 넣을 설정.txt', enc.encode(conf.htmlSnippet)]);
 
-        // 5. 기기 맞춤형 적용 가이드
-        const guideTxt = `[단축이 - ${conf.label} 아이콘 적용 가이드]
-1. 압축을 푼 아이콘 이미지들(icon-*.png)과 manifest.webmanifest를 사이트 루트 디렉터리에 복사합니다.
-2. index.html의 </head> 태그 바로 위에 '웹에 넣을 설정.txt' 파일의 내용을 삽입합니다.
-3. 배포 후 브라우저에서 '${conf.finish}' 방식으로 바로가기를 생성하세요.`;
+        // 6. 내 웹사이트 화면에 [📱 단축 아이콘 설치] 버튼을 자동으로 띄워주는 원클릭 설치 스니펫
+        const installSnippet = `<!-- 📱 [${appName}] 단축 아이콘 원클릭 설치 버튼 및 스크립트 -->
+<!-- 내 웹사이트의 index.html에서 </body> 바로 위에 이 블록 전체를 복사해서 붙여넣으세요! -->
+<div id="pwa-auto-banner" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:999999;display:none;align-items:center;gap:12px;padding:12px 18px;background:rgba(255,255,255,0.92);border:1.5px solid #7c4dff;border-radius:20px;box-shadow:0 8px 30px rgba(0,0,0,0.18);backdrop-filter:blur(10px);font-family:system-ui,-apple-system,sans-serif;">
+  <span style="font-size:14px;font-weight:750;color:#2b1f4d;">📱 홈 화면에 [${appName}] 바로가기</span>
+  <button id="pwa-auto-btn" type="button" style="padding:8px 16px;background:linear-gradient(135deg,#7c4dff,#a855f7);color:#fff;border:none;border-radius:12px;font-size:13px;font-weight:750;cursor:pointer;box-shadow:0 4px 12px rgba(124,77,255,0.3);">바로 설치</button>
+</div>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(()=>{}); });
+}
+(function() {
+  const isApp = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+  if (isApp) return;
+  let pwaEvt = null;
+  const banner = document.getElementById('pwa-auto-banner');
+  const btn = document.getElementById('pwa-auto-btn');
+  banner.style.display = 'flex';
+  window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); pwaEvt = e; });
+  btn.onclick = async () => {
+    if (pwaEvt) {
+      pwaEvt.prompt();
+      const { outcome } = await pwaEvt.userChoice;
+      if (outcome === 'accepted') banner.style.display = 'none';
+      pwaEvt = null;
+    } else if (/iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase())) {
+      alert('아이폰/아이패드 사파리(Safari) 화면 하단의 [공유] 버튼(⎋)을 누른 뒤 [홈 화면에 추가]를 눌러주세요!');
+    } else {
+      alert('브라우저 우측 상단 메뉴(⋮)에서 [홈 화면에 추가] 또는 [앱 설치]를 눌러주세요!');
+    }
+  };
+})();
+<\/script>`;
+        files.push(['단축아이콘_원클릭_설치코드.txt', enc.encode(installSnippet)]);
+
+        // 7. 초보자도 1분 만에 끝내는 완벽 적용 안내서
+        const guideTxt = `=====================================================
+  [${appName}] - 내 웹사이트에 단축 아이콘 설치하는 방법
+=====================================================
+
+1단계: 파일들을 내 웹사이트 폴더에 넣기
+- 다운로드받은 ZIP 파일의 압축을 풉니다.
+- 압축을 풀면 나오는 아이콘 그림들(icon-*.png), manifest.webmanifest, 그리고 sw.js 파일을
+  내 웹사이트의 index.html이 있는 폴더(또는 public/ 폴더)에 전부 그대로 복사해 넣습니다.
+
+2단계: index.html의 <head> 안에 설정 넣기
+- '웹에 넣을 설정.txt' 파일을 열고 내용을 복사합니다.
+- 내 웹사이트의 index.html 파일을 열어 </head> 태그 바로 위에 붙여넣습니다.
+
+3단계: (추천) 내 웹사이트에 [바로 설치] 버튼 띄우기
+- '단축아이콘_원클릭_설치코드.txt' 파일을 열고 내용을 복사합니다.
+- 내 웹사이트의 index.html 파일 맨 아래 </body> 바로 위에 붙여넣습니다.
+
+👉 끝! 이제 GitHub에 push하여 Vercel 등으로 배포하면:
+방문자나 본인이 내 웹사이트에 접속했을 때 화면 하단에 [📱 바로 설치] 버튼이 생겨서,
+클릭 한 번으로 스마트폰 홈 화면이나 PC 바탕화면에 예쁜 단축 아이콘이 즉시 설치됩니다!`;
 
         files.push(['적용 안내.txt', enc.encode(guideTxt)]);
 
@@ -1152,13 +1279,13 @@
         const url = URL.createObjectURL(zipBlob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `danchugi-icons-${device}.zip`;
+        a.download = `${appName}-icons-${device}.zip`;
         document.body.appendChild(a);
         a.click();
         a.remove();
         downloadUrl = url;
 
-        status.textContent = `🎉 ${conf.label} 아이콘 압축 파일(ZIP)이 성공적으로 다운로드되었습니다!`;
+        status.textContent = `🎉 [${appName}] 단축 아이콘 & PWA 설치 풀패키지(ZIP)가 다운로드되었습니다!`;
       } catch (e) {
         console.error(e);
         status.textContent = '아이콘 생성 중 오류가 발생했습니다. 다시 시도해 주세요.';
