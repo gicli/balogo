@@ -1,174 +1,1221 @@
 <!doctype html>
 <html lang="ko">
-  <link rel="icon" type="image/png" sizes="32x32" href="./icon-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="./icon-16.png">
-<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png">
-<link rel="manifest" href="./manifest.webmanifest">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>단축이</title>
-<style>
-:root{--text:#4d35ac;--muted:#7466a7;--accent:#794eff}
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;color:var(--text)}
-body{min-height:100vh;display:grid;place-items:center;padding:32px 20px;background-color:#d8dcf7;background-image:radial-gradient(ellipse at 5% 90%,#b394eb99,transparent 40%),radial-gradient(ellipse at 97% 90%,#a983df88,transparent 36%),radial-gradient(ellipse at 50% 5%,#b7d7fa,transparent 65%),linear-gradient(135deg,#c7def6,#e2dcf6 60%,#cdd9ef);background-attachment:fixed}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 8% 75%,#fff9 0 10px,transparent 35px),radial-gradient(circle at 90% 82%,#fff9 0 12px,transparent 42px),radial-gradient(circle at 20% 96%,#fff9 0 8px,transparent 28px),radial-gradient(circle at 80% 93%,#b08edba8 0 12px,transparent 42px);filter:blur(8px);z-index:-1}
-.card{width:min(1120px,100%);padding:32px 40px;border:2px solid #ffffffbd;border-radius:48px;background:linear-gradient(135deg,#ffffff66,#e5dfff80);box-shadow:inset 0 0 0 6px #ffffff24,0 24px 70px #6159a02b;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
-h1{text-align:center;margin:0 0 8px;font-size:clamp(48px,9vw,96px);font-weight:950;letter-spacing:-.07em;color:#8657ef;text-shadow:0 2px 0 #d8bcff,0 6px 0 #7055d845,0 12px 20px #8664d429}
-@supports(-webkit-background-clip:text){h1{background:linear-gradient(115deg,#8271ff 15%,#8955fa 65%,#bb84ed);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}}
-.sub{margin:0 0 24px;text-align:center;color:var(--muted);font-size:15px}
-.devices{display:flex;gap:16px;justify-content:center;max-width:720px;margin:0 auto 24px}
-.devices button{display:flex;align-items:center;justify-content:center;gap:10px;flex:1;min-height:60px;border:2px solid #ffffffbd;border-radius:36px;background:linear-gradient(135deg,#ffffff72,#e4dcff8c);color:#654ac8;font-size:19px;font-weight:750;box-shadow:inset 0 2px 4px #fffc;cursor:pointer}
-.devices button[aria-pressed="true"]{color:#fff;background:linear-gradient(135deg,#a18dff,#7d53f6);box-shadow:inset 0 0 0 4px #ffffff38,0 6px 14px #7855d832}
-.workspace{display:grid;grid-template-columns:1fr 1fr;gap:24px}
-.panel{min-width:0;min-height:320px;padding:22px;border:2px solid #ffffffb8;border-radius:28px;background:#f7f4ff42}
-.drop{min-height:276px;height:100%;border:2px dashed #b6a5ed99;border-radius:24px;display:flex;align-items:center;justify-content:center;text-align:center;padding:22px;cursor:pointer}
-.drop strong{display:block;font-size:24px;font-weight:800;margin:12px 0 8px;color:#8271bd}
-.drop span{color:var(--muted);font-size:14px}
-.drop svg{width:76px;height:76px;color:#a38cda}
-input[type=file]{display:none}
-.previewWrap{height:100%;display:grid;place-items:center;text-align:center}
-.preview{display:none;width:min(100%,276px);aspect-ratio:1;height:auto;object-fit:cover;border-radius:28px;box-shadow:0 10px 24px #6754b420}
-.empty{color:var(--muted);font-size:18px}
-.actions{display:flex;gap:14px;margin-top:18px}
-.btn{display:flex;align-items:center;justify-content:center;gap:12px;flex:1;min-height:72px;padding:16px 12px;border:2px solid #ffffffc7;border-radius:32px;font-size:20px;font-weight:800;cursor:pointer;box-shadow:inset 0 2px 5px #ffffff7d,0 8px 20px #6555a321}
-.secondary{background:linear-gradient(140deg,#ffffff78,#e6ddff99);color:#5834bb}
-.primary{color:#fff;background:linear-gradient(120deg,#8050f5,#b547f3);box-shadow:inset 0 2px 4px #ffffff55,0 8px 22px #8b43d938}
-.btn svg,.devices svg{width:28px;height:28px;flex-shrink:0}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-button:focus-visible,.drop:focus-visible,summary:focus-visible{outline:3px solid #6841bf;outline-offset:4px}
-button:hover:not(:disabled){filter:brightness(1.04)}
-.note{margin:12px 0 0;text-align:center;color:var(--muted);font-size:13px}
-#status{margin:10px 0;color:#594986;font-size:14px;text-align:center;line-height:1.6}
-details{margin-top:16px;font-size:16px;line-height:1.7}summary{font-weight:750;cursor:pointer}
-.flow{display:grid;gap:4px;text-align:center;margin:16px 0}.flow div{background:#ffffff70;border:1px solid #ffffffb8;border-radius:16px;padding:12px;overflow-wrap:anywhere}.flow span{color:#7953cc;font-size:22px}
-@media(max-width:620px){body{padding:14px 10px}.card{padding:22px 16px;border-radius:30px}h1{font-size:58px}.sub{font-size:13px;margin-bottom:18px}.devices{gap:6px;margin-bottom:18px}.devices button{gap:5px;font-size:14px;min-height:48px;padding:8px 5px}.devices svg{width:19px;height:19px}.workspace{gap:14px;grid-template-columns:1fr}.panel{min-height:230px;padding:14px;border-radius:22px}.drop{min-height:200px}.preview{width:200px}.actions{flex-direction:column;gap:10px}.btn{min-height:58px;font-size:18px;border-radius:26px}.note{font-size:12px}details{font-size:15px}}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>단축이 - 웹 바로가기 아이콘 생성기</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="./icon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./icon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <style>
+    :root {
+      --primary: #7c4dff;
+      --primary-hover: #6a3de8;
+      --primary-gradient: linear-gradient(135deg, #7c4dff 0%, #9c40ff 50%, #c052f5 100%);
+      --text-main: #2b1f4d;
+      --text-muted: #645688;
+      --glass-base: rgba(255, 255, 255, 0.42);
+      --glass-border: rgba(255, 255, 255, 0.68);
+      --glass-glow: inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.95), inset 0 -1.5px 2px 0 rgba(255, 255, 255, 0.3);
+      --glass-shadow: 0 24px 60px -10px rgba(66, 44, 133, 0.18), 0 10px 25px -5px rgba(66, 44, 133, 0.1);
+      --radius-lg: 32px;
+      --radius-md: 20px;
+      --radius-sm: 14px;
+    }
 
-/* Match the selected glass-and-lavender reference. */
-body{padding:5vh 24px 24px;display:flex;flex-direction:column;justify-content:center;background:#dbe2fa url('./assets/floral-background.webp') center/cover fixed no-repeat}
-body:before{display:none}
-.card{width:min(1312px,86vw);padding:26px 6% 42px;border-radius:60px;border:2px solid #ffffffd9;background:linear-gradient(130deg,#dae7ff8c,#ece1ff99);box-shadow:inset 0 0 0 9px #ffffff36,0 18px 44px #8774c332;backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
-h1{margin:0 auto 22px;text-shadow:none;background:none!important;-webkit-text-fill-color:initial;font-size:inherit;line-height:1;filter:none}
-.title-image{display:block;width:clamp(260px,30vw,470px);max-width:100%;height:auto;margin:auto}
-.sub,.drop span{display:none}
-.devices{max-width:810px;gap:26px;margin:0 auto 20px}
-.devices button{min-height:72px;font-size:24px;border-radius:42px;gap:14px;background:linear-gradient(135deg,#ffffff65,#e4e2ff88)}
-.devices button[aria-pressed="true"]{background:linear-gradient(155deg,#aa9bff,#8061ff);box-shadow:inset 0 0 0 5px #ffffff48,0 8px 18px #8070d326}
-.devices svg{width:34px;height:34px}
-.workspace{gap:24px}
-.panel{padding:22px;min-height:clamp(300px,27.5vw,424px);border-radius:26px;background:#edf0ff45;border:2px solid #ffffffcf}
-.drop{min-height:100%;border-radius:24px;border:2px dashed #b8aaf28c}
-.drop svg{width:106px;height:106px;stroke-width:2.2}
-.drop strong{font-size:32px;margin:14px 0 0;color:#8b81c8}
-.preview{width:min(100%,400px);border-radius:34px;box-shadow:none}
-.actions{gap:16px;margin-top:16px}
-.btn{min-height:100px;border-radius:38px;font-size:27px;gap:16px;box-shadow:inset 0 2px 6px #ffffff8a,0 12px 20px #8879c421}
-.btn svg{width:42px;height:42px}
-.secondary{color:#583cbe;background:linear-gradient(145deg,#ffffff78,#e6dcff99)}
-.primary{background:linear-gradient(130deg,#8654fa,#b148f0)}
-.primary:disabled{opacity:.65}
-.support{width:min(1312px,86vw);margin:8px auto 0;color:#514189}
-.support>details{margin:0;padding:8px 18px;border-radius:18px;background:#f1ecffbf}
-#status{font-size:14px;margin:4px 0;min-height:0}
-.note{margin:8px 0;font-size:14px;text-align:left}
-@media(max-width:1000px){body{padding:24px}.card,.support{width:100%}.card{padding:24px 30px 30px;border-radius:42px}.title-image{width:360px}.devices{gap:12px}.devices button{font-size:20px;min-height:60px}.devices svg{width:28px;height:28px}.panel{min-height:280px;padding:18px}.drop svg{width:80px;height:80px}.drop strong{font-size:25px}.btn{font-size:20px;min-height:76px;gap:10px}.btn svg{width:30px;height:30px}}
-@media(max-width:620px){body{padding:18px 10px}.card{padding:22px 16px 24px;border-radius:32px}.title-image{width:280px}h1{margin-bottom:20px}.devices{gap:7px;margin-bottom:14px}.devices button{font-size:14px;min-height:48px;gap:5px;border-radius:26px}.devices svg{width:20px;height:20px}.workspace{grid-template-columns:1fr 1fr;gap:10px}.panel{padding:10px;min-height:150px;border-radius:20px}.drop svg{width:48px;height:48px}.drop strong{font-size:18px;margin-top:7px}.drop{padding:10px;border-radius:15px}.preview{border-radius:18px}.empty{font-size:14px}.actions{flex-direction:row;gap:7px;margin-top:12px}.btn{min-height:58px;flex-direction:column;gap:4px;font-size:12px;padding:8px 3px;border-radius:20px}.btn svg{width:24px;height:24px}.support>details{padding:8px 12px}details{font-size:14px}}
-@media(max-width:350px){.devices button{font-size:12px}.btn{font-size:11px}.title-image{width:240px}}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-.reference-surface{display:none}
-@media(min-width:621px){
-body{padding:0;justify-content:flex-start}
-.card{isolation:isolate;position:relative;width:min(1536px,100%);aspect-ratio:3/2;padding:0;border:0;border-radius:0;background:none;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
-.reference-surface{display:block;position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
-h1{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);margin:0}
-.devices{position:absolute;left:23.76%;top:26.46%;width:52.74%;height:7.04%;margin:0;max-width:none;gap:2.2%}
-.devices button{min-height:0;padding:0;border:0;background:transparent!important;box-shadow:none!important;color:transparent;font-size:clamp(14px,1.75vw,28px);border-radius:999px}
-.devices svg{opacity:0}
-.devices button[aria-pressed="true"]{color:transparent}
-.workspace{position:absolute;left:12.5%;top:35.16%;width:75%;height:41.4%;gap:1.75%}
-.panel{padding:0;min-height:0;border:0;background:transparent;border-radius:0}
-.drop{min-height:0;height:100%;border:0;background:transparent;padding:0;color:transparent}
-.drop strong,.drop svg{visibility:hidden}
-.preview{width:70.7%;border-radius:clamp(18px,2.25vw,36px)}
-.actions{position:absolute;left:12.5%;top:78.125%;width:75%;height:9.77%;margin:0;gap:1.16%}
-.btn{min-height:0;padding:0;background:transparent!important;border:0;box-shadow:none;color:transparent;border-radius:clamp(18px,3vw,42px)}
-.btn svg,.btn span{opacity:0}
-.btn:disabled{opacity:1}
-.btn:hover:not(:disabled){background:#ffffff15!important;filter:none}
-.support{width:min(1312px,86vw);margin:0 auto 16px}
-.card:not([data-current="computer"]) .devices button{background:linear-gradient(135deg,#e9e8fcef,#e2e0f5ef)!important;color:#674dce;border:2px solid #ffffffaa}
-.card:not([data-current="computer"]) .devices svg{opacity:1}
-.card:not([data-current="computer"]) .devices button[aria-pressed="true"]{background:linear-gradient(135deg,#a28aff,#7c55f5)!important;color:white;box-shadow:inset 0 0 0 3px #ffffff40!important}
-}
-.download-link{display:inline-block;margin:8px 12px;color:#593bc5;font-weight:750;text-decoration:underline}</style>
+    /* 고급 글래스모피즘을 돋보이게 하는 앰비언트 글로우 배경 */
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 16px;
+      font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+      color: var(--text-main);
+      background-color: #e5ebfc;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(199, 210, 254, 0.75) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(245, 208, 254, 0.7) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(216, 180, 254, 0.65) 0px, transparent 50%),
+        radial-gradient(at 0% 100%, rgba(196, 230, 254, 0.7) 0px, transparent 50%);
+      background-attachment: fixed;
+      position: relative;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    /* 입체감을 극대화하는 배경 빛 방울들 (Ambient Glass Glow Orbs) */
+    .ambient-orb {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(90px);
+      z-index: 0;
+      opacity: 0.75;
+    }
+    .orb-1 {
+      width: 480px;
+      height: 480px;
+      background: #a855f7;
+      top: -80px;
+      left: 10%;
+    }
+    .orb-2 {
+      width: 440px;
+      height: 440px;
+      background: #60a5fa;
+      bottom: -60px;
+      right: 12%;
+    }
+    .orb-3 {
+      width: 320px;
+      height: 320px;
+      background: #f472b6;
+      top: 40%;
+      right: -40px;
+    }
+
+    /* 메인 앱 컨테이너 */
+    .app-container {
+      position: relative;
+      z-index: 1;
+      width: min(940px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    /* 🌟 프리미엄 프로스티드 글래스 메인 카드 🌟 */
+    .glass-card {
+      background: var(--glass-base);
+      border: 1.8px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: 44px 40px;
+      box-shadow: var(--glass-glow), var(--glass-shadow);
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+      transition: box-shadow 0.3s ease;
+    }
+
+    /* 헤더 */
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .title-image {
+      display: block;
+      height: 68px;
+      width: auto;
+      max-width: 80%;
+      margin: 0 auto 12px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 12px rgba(110, 68, 210, 0.15));
+    }
+
+    .header-title-text {
+      font-size: 34px;
+      font-weight: 850;
+      letter-spacing: -0.02em;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+
+    /* 🌟 글래스 세그먼트 탭 컨트롤 (기기 선택 4버튼) 🌟 */
+    .device-tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 30px;
+      background: rgba(255, 255, 255, 0.28);
+      padding: 7px;
+      border-radius: 22px;
+      border: 1.2px solid rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
+    }
+
+    .tab-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 13px 12px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 15px;
+      font-weight: 700;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .tab-btn svg {
+      width: 20px;
+      height: 20px;
+      transition: transform 0.2s ease;
+    }
+
+    .tab-btn:hover:not([aria-pressed="true"]) {
+      color: var(--primary);
+      background: rgba(255, 255, 255, 0.55);
+      border-color: rgba(255, 255, 255, 0.8);
+      transform: translateY(-1px);
+    }
+
+    .tab-btn[aria-pressed="true"] {
+      color: #ffffff;
+      background: var(--primary-gradient);
+      border-color: rgba(255, 255, 255, 0.5);
+      box-shadow: 0 4px 16px rgba(124, 77, 255, 0.4), inset 0 1px 1.5px rgba(255, 255, 255, 0.6);
+      transform: translateY(-1px);
+    }
+
+    .tab-btn[aria-pressed="true"] svg {
+      transform: scale(1.08);
+    }
+
+    /* 작업 영역 (2열 레이아웃) */
+    .workspace {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+      margin-bottom: 28px;
+    }
+
+    /* 내부 서브 글래스 패널 */
+    .sub-panel {
+      background: rgba(255, 255, 255, 0.32);
+      border: 1.5px solid rgba(255, 255, 255, 0.65);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 280px;
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.8), 0 8px 24px rgba(70, 50, 130, 0.05);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transition: all 0.25s ease;
+    }
+
+    /* 드래그 앤 드롭 영역 */
+    .drop-zone {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 2px dashed rgba(146, 120, 222, 0.6);
+      border-radius: 18px;
+      padding: 24px 16px;
+      text-align: center;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.15);
+      transition: all 0.25s ease;
+    }
+
+    .drop-zone:hover, .drop-zone.drag-over {
+      border-color: var(--primary);
+      background: rgba(124, 77, 255, 0.09);
+      box-shadow: 0 0 20px rgba(124, 77, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .drop-icon-wrap {
+      width: 64px;
+      height: 64px;
+      border-radius: 20px;
+      background: rgba(124, 77, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      color: var(--primary);
+      transition: transform 0.25s ease, background 0.25s ease;
+    }
+
+    .drop-zone:hover .drop-icon-wrap {
+      transform: scale(1.12) rotate(3deg);
+      background: rgba(124, 77, 255, 0.18);
+    }
+
+    .drop-icon-wrap svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    .drop-text {
+      font-size: 17px;
+      font-weight: 750;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    .drop-subtext {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    /* 프리뷰 영역 */
+    .preview-box {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .preview-canvas-wrap {
+      position: relative;
+      width: 156px;
+      height: 156px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .preview-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 30px;
+      box-shadow: 0 12px 32px rgba(85, 52, 175, 0.25), 0 0 0 3px rgba(255, 255, 255, 0.9);
+      background: #ffffff;
+      animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.85); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .preview-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 600;
+      gap: 10px;
+    }
+
+    .preview-placeholder svg {
+      width: 52px;
+      height: 52px;
+      color: #9f8dd6;
+      opacity: 0.85;
+    }
+
+    .preview-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .preview-badge {
+      font-size: 11px;
+      font-weight: 750;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: rgba(124, 77, 255, 0.12);
+      border: 1px solid rgba(124, 77, 255, 0.2);
+      color: var(--primary);
+    }
+
+    /* 🌟 버튼 그룹 디자인 🌟 */
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1.45fr;
+      gap: 14px;
+    }
+
+    .btn {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 16px 14px;
+      border-radius: var(--radius-md);
+      font-size: 16px;
+      font-weight: 750;
+      cursor: pointer;
+      overflow: hidden;
+      user-select: none;
+      transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn svg {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+    }
+
+    /* 보조 버튼: 반투명 크리스탈 글래스 스타일 */
+    .btn-secondary {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.62) 0%, rgba(255, 255, 255, 0.35) 100%);
+      color: var(--text-main);
+      border: 1.5px solid var(--glass-border);
+      box-shadow: inset 0 1px 1.5px rgba(255, 255, 255, 0.9), 0 6px 16px rgba(78, 55, 140, 0.08);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.55) 100%);
+      border-color: #ffffff;
+      color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 1), 0 10px 22px rgba(78, 55, 140, 0.14);
+    }
+
+    .btn-secondary:hover:not(:disabled) svg {
+      transform: scale(1.1);
+    }
+
+    .btn-secondary:active:not(:disabled) {
+      transform: translateY(0) scale(0.98);
+      box-shadow: 0 3px 8px rgba(78, 55, 140, 0.1);
+    }
+
+    /* 메인 다운로드 버튼: 생동감 넘치는 비비드 퍼플 글래스 */
+    .btn-primary {
+      background: var(--primary-gradient);
+      color: #ffffff;
+      border: 1.5px solid rgba(255, 255, 255, 0.45);
+      box-shadow: inset 0 1.5px 2px rgba(255, 255, 255, 0.6), 0 10px 28px rgba(124, 77, 255, 0.42);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: inset 0 1.5px 2px rgba(255, 255, 255, 0.8), 0 14px 34px rgba(124, 77, 255, 0.52);
+      filter: brightness(1.06);
+    }
+
+    .btn-primary:hover:not(:disabled) svg {
+      transform: translateY(-1px) scale(1.1);
+    }
+
+    .btn-primary:active:not(:disabled) {
+      transform: translateY(0) scale(0.98);
+      box-shadow: 0 4px 14px rgba(124, 77, 255, 0.35);
+    }
+
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      filter: grayscale(0.5);
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    /* 상태 알림 바 */
+    .status-msg {
+      margin-top: 18px;
+      font-size: 14px;
+      text-align: center;
+      color: #533f88;
+      min-height: 22px;
+      font-weight: 650;
+      letter-spacing: -0.01em;
+    }
+
+    /* 하단 가이드 아코디언 카드 (일관된 글래스 스타일) */
+    .guide-card {
+      background: rgba(255, 255, 255, 0.32);
+      border: 1.5px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 18px 26px;
+      box-shadow: var(--glass-glow), 0 10px 30px rgba(66, 44, 133, 0.08);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    details summary {
+      cursor: pointer;
+      font-weight: 750;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      user-select: none;
+      font-size: 15px;
+    }
+
+    details summary::-webkit-details-marker {
+      display: none;
+    }
+
+    details summary:before {
+      content: "▶";
+      font-size: 11px;
+      color: var(--primary);
+      transition: transform 0.25s ease;
+    }
+
+    details[open] summary:before {
+      transform: rotate(90deg);
+    }
+
+    .guide-content {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(130, 110, 190, 0.2);
+      font-size: 14px;
+      color: var(--text-main);
+    }
+
+    .flow-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      margin: 16px 0;
+      text-align: center;
+    }
+
+    .flow-step {
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      border-radius: var(--radius-sm);
+      padding: 12px 8px;
+      font-size: 13px;
+      font-weight: 650;
+      box-shadow: 0 2px 8px rgba(78, 55, 140, 0.05);
+    }
+
+    .guide-extra {
+      margin-top: 14px;
+      background: rgba(255, 255, 255, 0.35);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.65);
+    }
+
+    .guide-extra code {
+      background: rgba(124, 77, 255, 0.12);
+      color: var(--primary);
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-weight: 600;
+      font-size: 12px;
+    }
+
+    /* 모바일 반응형 */
+    @media (max-width: 680px) {
+      body {
+        padding: 20px 12px;
+      }
+      .glass-card {
+        padding: 28px 18px;
+        border-radius: 24px;
+      }
+      .title-image {
+        height: 52px;
+      }
+      .device-tabs {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+      }
+      .workspace {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+      .sub-panel {
+        min-height: 220px;
+        padding: 18px;
+      }
+      .actions {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .btn {
+        padding: 14px 10px;
+        font-size: 15px;
+      }
+      .flow-steps {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* 📱 원클릭 단축 아이콘 설치 배너 & 모달 */
+    .install-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding: 12px 18px;
+      background: linear-gradient(135deg, rgba(124, 77, 255, 0.16) 0%, rgba(168, 85, 247, 0.16) 100%);
+      border: 1.5px solid rgba(124, 77, 255, 0.45);
+      border-radius: var(--radius-sm);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 16px rgba(124, 77, 255, 0.12);
+      animation: fadeIn 0.3s ease;
+    }
+    .install-banner-text {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+    .install-banner-text strong {
+      font-size: 14px;
+      color: var(--primary);
+    }
+    .install-banner-text span {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .install-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 16px;
+      background: var(--primary-gradient);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 14px;
+      font-size: 13px;
+      font-weight: 750;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(124, 77, 255, 0.35);
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .install-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+    .install-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.08);
+      box-shadow: 0 6px 18px rgba(124, 77, 255, 0.45);
+    }
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(20, 15, 40, 0.45);
+      backdrop-filter: blur(10px);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+    .modal-card {
+      background: rgba(255, 255, 255, 0.95);
+      border: 1.5px solid rgba(255, 255, 255, 0.9);
+      border-radius: 24px;
+      padding: 26px 24px;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+      text-align: left;
+    }
+    .modal-card h3 {
+      font-size: 18px;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    .modal-card p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .modal-card ol {
+      padding-left: 20px;
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--text-main);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
-<main class="card" data-current="computer">
-<img class="reference-surface" src="./assets/reference-surface.webp" alt="" aria-hidden="true" />
-  <h1><img class="title-image" src="./assets/danchugi-title.webp" alt="단축이" /></h1>
-  <p class="sub">기기를 고르고 사진을 선택하세요.</p>
-  <nav class="devices" aria-label="사용할 기기">
-<button type="button" data-device="computer" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>컴퓨터용</button>
-<button type="button" data-device="tablet" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M11 19h2"/></svg>태블릿용</button>
-<button type="button" data-device="phone" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 19h2"/></svg>휴대폰용</button>
-</nav>
-<section class="workspace">
-    <div class="panel">
-      <label class="drop" for="file">
-        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5"/><path d="m4 17 5-5 4 4 3-3 5 5"/></svg><strong>사진 선택</strong><span>사진을 누르거나 끌어다 놓으세요</span></div>
-      </label>
-      <input id="file" type="file" accept="image/*" />
-    </div>
-    <div class="panel">
-      <div class="previewWrap">
-        <img id="preview" class="preview" style="display:none" alt="아이콘 미리보기" />
-        <div id="empty" class="empty" style="display:none">아이콘 미리보기</div>
+
+  <!-- 배경 앰비언트 글로우 오브 (Glass 효과 극대화) -->
+  <div class="ambient-orb orb-1" aria-hidden="true"></div>
+  <div class="ambient-orb orb-2" aria-hidden="true"></div>
+  <div class="ambient-orb orb-3" aria-hidden="true"></div>
+
+  <div class="app-container">
+    <!-- 메인 글래스 카드 -->
+    <main class="glass-card">
+      <header class="header">
+        <img class="title-image" src="./assets/danchugi-title.webp" alt="단축이" onerror="this.style.display='none'; document.getElementById('alt-title').style.display='block';" />
+        <h1 id="alt-title" class="header-title-text" style="display:none;">단축이</h1>
+        <p class="subtitle">사진을 업로드하면 웹사이트 및 스마트폰 바로가기 아이콘을 완성해 드립니다.</p>
+      </header>
+
+      <!-- 원클릭 단축 아이콘 설치 배너 (PWA Install Banner) -->
+      <div id="pwa-install-banner" class="install-banner" style="display:none;">
+        <div class="install-banner-text">
+          <strong>📱 단축 아이콘 설치</strong>
+          <span>바탕화면 / 홈 화면에 앱처럼 바로가기를 만듭니다</span>
+        </div>
+        <button id="pwa-install-btn" class="install-btn" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          바로 설치
+        </button>
       </div>
-    </div>
-  </section>
-  <div class="actions">
-    <button id="paste" class="btn secondary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="5" width="14" height="17" rx="2"/><rect x="9" y="2" width="6" height="5" rx="2"/></svg><span>사진 붙여넣기</span></button>
-    <button id="choose" class="btn secondary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5"/><path d="m4 17 5-5 4 4 3-3 5 5"/></svg><span>사진 바꾸기</span></button>
-    <button id="download" class="btn primary" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 16v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/></svg><span>아이콘 받기</span></button>
+
+      <!-- iOS / 수동 안내 모달 -->
+      <div id="ios-guide-modal" class="modal-overlay" style="display:none;" onclick="if(event.target===this)this.style.display='none'">
+        <div class="modal-card">
+          <h3>📲 홈 화면에 바로가기 추가하기</h3>
+          <p>아이폰 / 아이패드에서는 사파리 브라우저에서 아래 순서대로 쉽게 추가할 수 있습니다:</p>
+          <ol>
+            <li>사파리(Safari) 화면 하단(또는 상단)의 <strong>공유 버튼( <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg> )</strong>을 누릅니다.</li>
+            <li>메뉴를 내려 <strong>[홈 화면에 추가]</strong>를 누릅니다.</li>
+            <li>우측 상단 <strong>[추가]</strong>를 누르면 바탕화면에 단축 아이콘이 생성됩니다!</li>
+          </ol>
+          <button type="button" class="btn btn-primary" style="margin-top:16px; width:100%; min-height:44px; font-size:14px;" onclick="document.getElementById('ios-guide-modal').style.display='none'">확인 완료</button>
+        </div>
+      </div>
+
+      <!-- 글래스 기기 선택 탭 (전체 / 컴퓨터 / 태블릿 / 휴대폰) -->
+      <nav class="device-tabs" aria-label="아이콘 타깃 기기 선택">
+        <button type="button" class="tab-btn" data-device="all" aria-pressed="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          전체
+        </button>
+        <button type="button" class="tab-btn" data-device="computer" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          컴퓨터
+        </button>
+        <button type="button" class="tab-btn" data-device="tablet" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M11 19h2"/></svg>
+          태블릿
+        </button>
+        <button type="button" class="tab-btn" data-device="phone" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 19h2"/></svg>
+          휴대폰
+        </button>
+      </nav>
+
+      <!-- 2열 워크스페이스 -->
+      <section class="workspace">
+        <!-- 1. 이미지 선택/드롭 글래스 패널 -->
+        <div class="sub-panel">
+          <label class="drop-zone" for="file" id="drop-zone">
+            <div class="drop-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5"/><path d="m4 17 5-5 4 4 3-3 5 5"/>
+              </svg>
+            </div>
+            <div class="drop-text">사진 선택 또는 드래그</div>
+            <div class="drop-subtext">JPG, PNG, WebP 등 이미지 파일</div>
+          </label>
+          <input id="file" type="file" accept="image/*" />
+        </div>
+
+        <!-- 2. 프리뷰 글래스 패널 -->
+        <div class="sub-panel">
+          <div class="preview-box">
+            <div class="preview-canvas-wrap">
+              <div id="preview-placeholder" class="preview-placeholder">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/><path d="m10 15 5-3-5-3v6z"/>
+                </svg>
+                <span>아이콘 미리보기</span>
+              </div>
+              <img id="preview" class="preview-img" style="display:none" alt="아이콘 미리보기" />
+            </div>
+            <div class="preview-tags" id="preview-tags" style="display:none">
+              <span class="preview-badge">16×16</span>
+              <span class="preview-badge">32×32</span>
+              <span class="preview-badge">180×180</span>
+              <span class="preview-badge">192×192</span>
+              <span class="preview-badge">512×512</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 하단 액션 버튼 그룹 -->
+      <div class="actions">
+        <button id="paste" class="btn btn-secondary" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="5" y="5" width="14" height="17" rx="2"/><rect x="9" y="2" width="6" height="5" rx="2"/>
+          </svg>
+          <span>클립보드 붙여넣기</span>
+        </button>
+        <button id="choose" class="btn btn-secondary" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          <span id="choose-text">사진 파일 찾기</span>
+        </button>
+        <button id="download" class="btn btn-primary" type="button" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3v12m-5-5 5 5 5-5M4 16v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/>
+          </svg>
+          <span id="download-text">전체 아이콘 받기 (ZIP)</span>
+        </button>
+      </div>
+
+      <!-- 상태 알림 텍스트 -->
+      <p id="status" class="status-msg" role="status" aria-live="polite">사진을 추가하여 나만의 아이콘을 만들어보세요.</p>
+    </main>
+
+    <!-- 하단 글래스 가이드 카드 -->
+    <section class="guide-card" aria-label="사용 안내">
+      <details>
+        <summary>내 웹사이트에 적용하는 방법</summary>
+        <div class="guide-content">
+          <div id="guide-device-text" style="margin-bottom:12px; font-weight:700; color:var(--primary);"></div>
+          <div class="flow-steps">
+            <div class="flow-step">① 사진 선택/붙여넣기</div>
+            <div class="flow-step">② 아이콘 미리보기 확인</div>
+            <div class="flow-step">③ ZIP 파일 다운로드</div>
+            <div class="flow-step">④ 웹 루트에 파일 업로드</div>
+            <div class="flow-step">⑤ index.html 태그 삽입</div>
+          </div>
+          <div class="guide-extra">
+            <strong>💡 웹 적용 팁:</strong> 다운로드받은 ZIP 파일 안의 <code>웹에 넣을 설정.txt</code> 내용을 복사하여 웹사이트 <code>index.html</code>의 <code>&lt;/head&gt;</code> 직전에 추가해 주시면 됩니다.
+          </div>
+        </div>
+      </details>
+    </section>
   </div>
-</main>
-<section class="support" aria-label="사용 안내">
-<p id="status" role="status" aria-live="polite"></p>
-<details><summary>적용 방법</summary>
-  <p class="note">복사한 사진은 ‘사진 붙여넣기’ 또는 Ctrl+V로 넣으세요.</p>
-  <p class="note">여러 크기의 아이콘과 웹 적용 파일을 ZIP으로 받습니다.</p>
-<div id="guide"></div></details>
-</section>
 
-<canvas id="canvas" width="512" height="512" hidden></canvas>
-<script>
-const file=document.getElementById('file'), choose=document.getElementById('choose'), download=document.getElementById('download');
-const preview=document.getElementById('preview'), empty=document.getElementById('empty'), canvas=document.getElementById('canvas'), ctx=canvas.getContext('2d');
-const status=document.getElementById('status'),guide=document.getElementById('guide');
-let device='computer',photo=null,loadId=0,downloadUrl=null;
-function updateGuide(){
-const finish=device==='computer'?'컴퓨터 크롬에서 웹 열기 → 메뉴(⋮) → 설치 또는 바로가기 만들기':device==='tablet'?'안드로이드 태블릿: 크롬 메뉴(⋮) → 홈 화면에 추가. 아이패드: 사파리 공유 → 홈 화면에 추가':'안드로이드 휴대폰: 크롬 메뉴(⋮) → 홈 화면에 추가. 아이폰: 사파리 공유 → 홈 화면에 추가';
-guide.innerHTML=`<p><strong>사진을 받는 것만으로 회색 아이콘이 바뀌지는 않아요.</strong><br>먼저 내 웹에 그림을 넣고, 바로가기를 다시 만드세요.</p>
-<div class="flow"><div>① 사진 선택 또는 붙여넣기</div><span>↓</span><div>② 미리보기 확인 → 아이콘 받기</div><span>↓</span><div>③ 받은 ZIP 파일의 압축 풀기</div><span>↓</span><div>④ GitHub에서 index.html이 있는 곳에<br>아이콘 그림과 manifest.webmanifest 올리기</div><span>↓</span><div>⑤ 아래 ‘설정 넣는 법’대로 설정 추가 → 배포 완료 기다리기</div><span>↓</span><div>⑥ ${finish}</div></div>
-<details><summary>설정 넣는 법 (한 번만)</summary><ol><li>압축을 푼 ‘웹에 넣을 설정.txt’를 열고 내용을 전부 복사하세요.</li><li>GitHub에서 내 웹의 index.html을 열고 연필 버튼(수정)을 누르세요.</li><li>&lt;/head&gt;를 찾아 그 바로 위에 복사한 내용을 붙여넣으세요.</li><li>Commit changes(변경 저장)를 누르세요. Vercel에 연결되어 있다면 새 배포가 끝날 때까지 기다리세요.</li></ol><p>이미 icon 또는 manifest 설정이 있으면 중복 추가 대신 기존 설정을 수정해야 합니다. 그 경우 웹 파일을 보내주시면 제가 수정해드릴 수 있어요.</p></details>
-<p>예전 회색 바로가기는 삭제하고 새로 추가하세요. 설치 메뉴의 이름은 기기마다 조금 다를 수 있어요. 이 안내는 직접 수정할 수 있는 내 웹에 적용됩니다.</p>`;}
-document.querySelectorAll('[data-device]').forEach(button=>button.onclick=()=>{device=button.dataset.device;document.querySelector('.card').dataset.current=device;document.querySelectorAll('[data-device]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));updateGuide();});updateGuide();
-choose.onclick=()=>{file.value='';file.click();};
-document.querySelector('.drop').addEventListener('dragover',e=>e.preventDefault());
-document.querySelector('.drop').addEventListener('drop',e=>{e.preventDefault();if(e.dataTransfer.files[0])load(e.dataTransfer.files[0]);});
-file.onchange=()=>file.files[0]&&load(file.files[0]);
-document.addEventListener('paste',e=>{const items=Array.from(e.clipboardData?.items||[]);const item=items.find(i=>i.type.startsWith('image/'));if(item){const blob=item.getAsFile();if(blob){e.preventDefault();load(blob);}}else{status.textContent='복사된 사진이 없습니다. 사진 자체를 복사하거나 사진 선택을 이용하세요.';}});
-document.getElementById('paste').onclick=async()=>{try{if(!navigator.clipboard?.read){status.textContent='이 브라우저에서는 붙여넣기 버튼을 사용할 수 없습니다. 컴퓨터에서는 Ctrl+V, 휴대폰·태블릿에서는 사진 선택을 이용하세요.';return;}const items=await navigator.clipboard.read();for(const item of items){const type=item.types.find(t=>t.startsWith('image/'));if(type){load(await item.getType(type));return;}}status.textContent='복사된 사진이 없습니다. 먼저 사진을 복사하세요.';}catch(e){status.textContent='사진을 가져오지 못했습니다. 붙여넣기 권한을 허용하거나 Ctrl+V 또는 사진 선택을 이용하세요.';}};
-function load(f){const id=++loadId;if(!f.type.startsWith('image/')){status.textContent='사진 파일을 선택해주세요.';return;}download.disabled=true;status.textContent='사진을 불러오는 중입니다.';const url=URL.createObjectURL(f),img=new Image();img.onload=()=>{URL.revokeObjectURL(url);if(id!==loadId)return;photo=img;const size=Math.min(img.width,img.height);ctx.clearRect(0,0,512,512);ctx.drawImage(img,(img.width-size)/2,(img.height-size)/2,size,size,0,0,512,512);preview.src=canvas.toDataURL('image/png');preview.style.display='block';empty.style.display='none';download.disabled=false;choose.querySelector('span').textContent='사진 바꾸기';status.textContent='사진 중앙을 정사각형으로 잘랐습니다. 미리보기를 확인하세요.';};img.onerror=()=>{URL.revokeObjectURL(url);if(id!==loadId)return;download.disabled=!photo;status.textContent='이 사진을 읽을 수 없습니다. JPG 또는 PNG 사진으로 다시 선택해주세요.';};img.src=url;}
-function crc32(data){let crc=0xffffffff;for(const byte of data){crc^=byte;for(let i=0;i<8;i++)crc=(crc>>>1)^((crc&1)?0xedb88320:0);}return(crc^0xffffffff)>>>0;}
-function makeZip(files){const enc=new TextEncoder(),parts=[],directory=[];let offset=0;for(const[name,data]of files){const n=enc.encode(name),crc=crc32(data),head=new Uint8Array(30+n.length),v=new DataView(head.buffer);v.setUint32(0,0x04034b50,true);v.setUint16(4,20,true);v.setUint16(6,0x800,true);v.setUint16(12,33,true);v.setUint32(14,crc,true);v.setUint32(18,data.length,true);v.setUint32(22,data.length,true);v.setUint16(26,n.length,true);head.set(n,30);parts.push(head,data);const c=new Uint8Array(46+n.length),d=new DataView(c.buffer);d.setUint32(0,0x02014b50,true);d.setUint16(4,20,true);d.setUint16(6,20,true);d.setUint16(8,0x800,true);d.setUint16(14,33,true);d.setUint32(16,crc,true);d.setUint32(20,data.length,true);d.setUint32(24,data.length,true);d.setUint16(28,n.length,true);d.setUint32(42,offset,true);c.set(n,46);directory.push(c);offset+=head.length+data.length;}const end=new Uint8Array(22),e=new DataView(end.buffer);e.setUint32(0,0x06054b50,true);e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,directory.reduce((s,x)=>s+x.length,0),true);e.setUint32(16,offset,true);return new Blob([...parts,...directory,end],{type:'application/zip'});}
-function png(size,mask=false){const c=document.createElement('canvas');c.width=c.height=size;const x=c.getContext('2d');if(mask){x.fillStyle='#fff';x.fillRect(0,0,size,size);x.drawImage(canvas,size*.2,size*.2,size*.6,size*.6);}else x.drawImage(canvas,0,0,size,size);return new Promise((resolve,reject)=>c.toBlob(async b=>{if(b)resolve(new Uint8Array(await b.arrayBuffer()));else reject(new Error('PNG 생성 실패'));},'image/png'));}
-download.onclick=async()=>{if(!photo)return;download.disabled=true;try{const files=[];for(const size of[16,32,180,192,512])files.push(['icon-'+size+'.png',await png(size)]);files.push(['icon-maskable-512.png',await png(512,true)]);const enc=new TextEncoder();const manifest={name:'단축이',short_name:'단축이',start_url:'./',scope:'./',display:'standalone',icons:[{src:'icon-192.png',sizes:'192x192',type:'image/png',purpose:'any'},{src:'icon-512.png',sizes:'512x512',type:'image/png',purpose:'any'},{src:'icon-maskable-512.png',sizes:'512x512',type:'image/png',purpose:'maskable'}]};files.push(['manifest.webmanifest',enc.encode(JSON.stringify(manifest,null,2))]);files.push(['웹에 넣을 설정.txt',enc.encode('<link rel="icon" type="image/png" sizes="32x32" href="./icon-32.png">\n<link rel="icon" type="image/png" sizes="16x16" href="./icon-16.png">\n<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png">\n<link rel="manifest" href="./manifest.webmanifest">')]);files.push(['적용 안내.txt',enc.encode(guide.textContent+'\n다른 웹에 쓰려면 manifest의 이름을 그 웹 이름으로 바꾸세요. 기존 manifest가 있는 웹은 새 파일로 덮지 말고 icons 설정을 병합하세요. 기존 icon 링크도 중복되지 않도록 교체하세요. 이 파일들은 사이트 시작 페이지와 같은 폴더 기준이며, 다른 구조에서는 경로를 맞춰야 합니다. 설치 가능 여부는 브라우저와 웹 구성에 따라 다릅니다.')]);if(downloadUrl)URL.revokeObjectURL(downloadUrl);const url=URL.createObjectURL(makeZip(files)),a=document.createElement('a');a.href=url;a.download='danchugi-icons-'+device+'.zip';a.hidden=true;document.body.appendChild(a);a.click();a.remove();downloadUrl=url;status.textContent='아이콘 묶음을 만들었습니다. ';a.hidden=false;a.id='icon-save';a.className='download-link';a.textContent='아이콘 ZIP 저장';status.appendChild(a);}catch(e){status.textContent='아이콘 생성에 실패했습니다. 사진을 다시 선택해주세요.';}finally{download.disabled=false;}};
+  <canvas id="canvas" width="512" height="512" hidden></canvas>
 
+  <script>
+    // DOM 요소 참조
+    const file = document.getElementById('file');
+    const choose = document.getElementById('choose');
+    const chooseText = document.getElementById('choose-text');
+    const download = document.getElementById('download');
+    const downloadText = document.getElementById('download-text');
+    const preview = document.getElementById('preview');
+    const previewPlaceholder = document.getElementById('preview-placeholder');
+    const previewTags = document.getElementById('preview-tags');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const status = document.getElementById('status');
+    const dropZone = document.getElementById('drop-zone');
+    const guideDeviceText = document.getElementById('guide-device-text');
 
-// The user explicitly chose this image for publication as the app design.
-const example=new Image();example.onload=()=>{if(loadId!==0)return;ctx.drawImage(example,864,384,400,400,0,0,512,512);preview.src=canvas.toDataURL('image/png');if(window.matchMedia('(max-width:620px)').matches)preview.style.display='block';empty.style.display='none';photo=example;download.disabled=false;};example.src='./assets/reference-surface.webp';
-</script>
+    let device = 'all'; // 기본값: 전체
+    let photo = null;
+    let loadId = 0;
+    let downloadUrl = null;
+
+    // 기기별 설정 및 출력 규격 정의
+    const DEVICE_CONFIG = {
+      all: {
+        label: '전체',
+        buttonText: '전체 아이콘 받기 (ZIP)',
+        sizes: [16, 32, 180, 192, 512],
+        includeMaskable: true,
+        tags: ['16×16', '32×32', '180×180', '192×192', '512×512', '512×512 (Maskable)'],
+        finish: '모든 기기(컴퓨터 브라우저 탭 파비콘, 태블릿 및 스마트폰 홈 화면 바로가기)에 최적화된 통합 패키지입니다.',
+        manifestIcons: [
+          { src: 'icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+          { src: 'icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+          { src: 'icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+        ],
+        htmlSnippet: `<link rel="icon" type="image/png" sizes="32x32" href="./icon-32.png">\n<link rel="icon" type="image/png" sizes="16x16" href="./icon-16.png">\n<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png">\n<link rel="manifest" href="./manifest.webmanifest">`
+      },
+      computer: {
+        label: '컴퓨터',
+        buttonText: '컴퓨터 아이콘 받기 (ZIP)',
+        sizes: [16, 32, 192, 512],
+        includeMaskable: false,
+        tags: ['16×16 (파비콘)', '32×32 (고해상도 파비콘)', '192×192 (데스크톱 앱)', '512×512 (스플래시)'],
+        finish: '컴퓨터: 크롬/엣지 등 PC 브라우저 탭 파비콘 및 데스크톱 [설치/바로가기 만들기]용 아이콘만 출력합니다.',
+        manifestIcons: [
+          { src: 'icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+          { src: 'icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' }
+        ],
+        htmlSnippet: `<link rel="icon" type="image/png" sizes="32x32" href="./icon-32.png">\n<link rel="icon" type="image/png" sizes="16x16" href="./icon-16.png">\n<link rel="manifest" href="./manifest.webmanifest">`
+      },
+      tablet: {
+        label: '태블릿',
+        buttonText: '태블릿 아이콘 받기 (ZIP)',
+        sizes: [180, 192, 512],
+        includeMaskable: true,
+        tags: ['180×180 (iPad)', '192×192 (안드로이드)', '512×512 (고해상도)'],
+        finish: '태블릿: 안드로이드 태블릿(크롬 메뉴 → 홈 화면에 추가), iPad(사파리 공유 버튼 → 홈 화면에 추가)',
+        manifestIcons: [
+          { src: 'icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+          { src: 'icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+          { src: 'icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+        ],
+        htmlSnippet: `<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png">\n<link rel="manifest" href="./manifest.webmanifest">`
+      },
+      phone: {
+        label: '휴대폰',
+        buttonText: '휴대폰 아이콘 받기 (ZIP)',
+        sizes: [180, 192, 512],
+        includeMaskable: true,
+        tags: ['180×180 (iPhone)', '192×192 (안드로이드)', '512×512 (고해상도)'],
+        finish: '휴대폰: 안드로이드(크롬 메뉴 → 홈 화면에 추가), iPhone(사파리 공유 버튼 → 홈 화면에 추가)',
+        manifestIcons: [
+          { src: 'icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+          { src: 'icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+          { src: 'icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+        ],
+        htmlSnippet: `<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png">\n<link rel="manifest" href="./manifest.webmanifest">`
+      }
+    };
+
+    // UI 및 가이드 업데이트
+    function updateUI() {
+      const conf = DEVICE_CONFIG[device] || DEVICE_CONFIG.all;
+      downloadText.textContent = conf.buttonText;
+      guideDeviceText.textContent = `🎯 선택한 기기 (${conf.label}): ${conf.finish}`;
+      previewTags.innerHTML = conf.tags.map(t => `<span class="preview-badge">${t}</span>`).join('');
+    }
+
+    // 기기 탭 전환
+    document.querySelectorAll('[data-device]').forEach(button => {
+      button.onclick = () => {
+        device = button.dataset.device;
+        document.querySelectorAll('[data-device]').forEach(b => {
+          b.setAttribute('aria-pressed', String(b === button));
+        });
+        updateUI();
+      };
+    });
+    updateUI();
+
+    // 파일 선택 버튼 클릭
+    choose.onclick = () => {
+      file.value = '';
+      file.click();
+    };
+
+    // 드래그 앤 드롭 이벤트 처리
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('drag-over');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('drag-over');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        load(e.dataTransfer.files[0]);
+      }
+    });
+
+    // 인풋 체인지 이벤트
+    file.onchange = () => {
+      if (file.files && file.files[0]) {
+        load(file.files[0]);
+      }
+    };
+
+    // 클립보드 붙여넣기 (Ctrl + V)
+    document.addEventListener('paste', (e) => {
+      const items = Array.from(e.clipboardData?.items || []);
+      const item = items.find(i => i.type.startsWith('image/'));
+      if (item) {
+        const blob = item.getAsFile();
+        if (blob) {
+          e.preventDefault();
+          load(blob);
+        }
+      }
+    });
+
+    // 붙여넣기 버튼 클릭
+    document.getElementById('paste').onclick = async () => {
+      try {
+        if (!navigator.clipboard?.read) {
+          status.textContent = '이 브라우저에서는 붙여넣기 버튼이 제한됩니다. 단축키 Ctrl+V를 눌러주세요.';
+          return;
+        }
+        const items = await navigator.clipboard.read();
+        for (const item of items) {
+          const type = item.types.find(t => t.startsWith('image/'));
+          if (type) {
+            load(await item.getType(type));
+            return;
+          }
+        }
+        status.textContent = '클립보드에 복사된 이미지가 없습니다. 이미지를 복사 후 다시 시도하세요.';
+      } catch (e) {
+        status.textContent = '클립보드 이미지를 가져오지 못했습니다. 사진 파일 찾기 또는 Ctrl+V를 이용해 주세요.';
+      }
+    };
+
+    // 이미지 로드 및 1:1 정사각 크롭 처리
+    function load(f) {
+      const id = ++loadId;
+      if (!f.type.startsWith('image/')) {
+        status.textContent = '이미지 파일(JPG, PNG, WebP 등)만 선택 가능합니다.';
+        return;
+      }
+      download.disabled = true;
+      status.textContent = '사진을 변환하는 중입니다...';
+
+      const url = URL.createObjectURL(f);
+      const img = new Image();
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        if (id !== loadId) return;
+        photo = img;
+
+        // 중앙 1:1 정사각 크롭 계산
+        const size = Math.min(img.width, img.height);
+        ctx.clearRect(0, 0, 512, 512);
+        ctx.drawImage(img, (img.width - size) / 2, (img.height - size) / 2, size, size, 0, 0, 512, 512);
+
+        // 미리보기 반영
+        preview.src = canvas.toDataURL('image/png');
+        preview.style.display = 'block';
+        previewPlaceholder.style.display = 'none';
+        previewTags.style.display = 'flex';
+        download.disabled = false;
+        chooseText.textContent = '사진 변경하기';
+        status.textContent = '✨ 정사각 아이콘으로 변환 완료! 아래 다운로드 버튼을 눌러주세요.';
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        if (id !== loadId) return;
+        download.disabled = !photo;
+        status.textContent = '이미지를 읽는 중 오류가 발생했습니다. 다른 사진으로 시도해 주세요.';
+      };
+      img.src = url;
+    }
+
+    // ZIP 생성을 위한 CRC-32 계산
+    function crc32(data) {
+      let crc = 0xffffffff;
+      for (const byte of data) {
+        crc ^= byte;
+        for (let i = 0; i < 8; i++) {
+          crc = (crc >>> 1) ^ ((crc & 1) ? 0xedb88320 : 0);
+        }
+      }
+      return (crc ^ 0xffffffff) >>> 0;
+    }
+
+    // 브라우저 내장 무라이브러리 순수 ZIP 압축
+    function makeZip(files) {
+      const enc = new TextEncoder();
+      const parts = [];
+      const directory = [];
+      let offset = 0;
+
+      for (const [name, data] of files) {
+        const n = enc.encode(name);
+        const crc = crc32(data);
+        const head = new Uint8Array(30 + n.length);
+        const v = new DataView(head.buffer);
+        v.setUint32(0, 0x04034b50, true);
+        v.setUint16(4, 20, true);
+        v.setUint16(6, 0x800, true);
+        v.setUint16(12, 33, true);
+        v.setUint32(14, crc, true);
+        v.setUint18 ? null : null;
+        v.setUint32(18, data.length, true);
+        v.setUint32(22, data.length, true);
+        v.setUint16(26, n.length, true);
+        head.set(n, 30);
+        parts.push(head, data);
+
+        const c = new Uint8Array(46 + n.length);
+        const d = new DataView(c.buffer);
+        d.setUint32(0, 0x02014b50, true);
+        d.setUint16(4, 20, true);
+        d.setUint16(6, 20, true);
+        d.setUint16(8, 0x800, true);
+        d.setUint16(14, 33, true);
+        d.setUint32(16, crc, true);
+        d.setUint32(20, data.length, true);
+        d.setUint32(24, data.length, true);
+        d.setUint16(28, n.length, true);
+        d.setUint32(42, offset, true);
+        c.set(n, 46);
+        directory.push(c);
+
+        offset += head.length + data.length;
+      }
+
+      const end = new Uint8Array(22);
+      const e = new DataView(end.buffer);
+      e.setUint32(0, 0x06054b50, true);
+      e.setUint16(8, files.length, true);
+      e.setUint16(10, files.length, true);
+      e.setUint32(12, directory.reduce((s, x) => s + x.length, 0), true);
+      e.setUint32(16, offset, true);
+
+      return new Blob([...parts, ...directory, end], { type: 'application/zip' });
+    }
+
+    // 지정 해상도 PNG Blob 반환
+    function png(size, mask = false) {
+      const c = document.createElement('canvas');
+      c.width = c.height = size;
+      const x = c.getContext('2d');
+      if (mask) {
+        x.fillStyle = '#ffffff';
+        x.fillRect(0, 0, size, size);
+        x.drawImage(canvas, size * 0.2, size * 0.2, size * 0.6, size * 0.6);
+      } else {
+        x.drawImage(canvas, 0, 0, size, size);
+      }
+      return new Promise((resolve, reject) => {
+        c.toBlob(async (b) => {
+          if (b) resolve(new Uint8Array(await b.arrayBuffer()));
+          else reject(new Error('PNG 생성 실패'));
+        }, 'image/png');
+      });
+    }
+
+    // 다운로드 처리: 선택된 기기에 맞는 아이콘만 출력
+    download.onclick = async () => {
+      if (!photo) return;
+      download.disabled = true;
+      const conf = DEVICE_CONFIG[device] || DEVICE_CONFIG.all;
+      status.textContent = `${conf.label}용 아이콘 패키지를 생성하고 있습니다...`;
+
+      try {
+        const files = [];
+
+        // 1. 해당 기기 설정에 정의된 해상도만 생성
+        for (const size of conf.sizes) {
+          files.push(['icon-' + size + '.png', await png(size)]);
+        }
+
+        // 2. maskable 지원 기기일 경우 생성
+        if (conf.includeMaskable) {
+          files.push(['icon-maskable-512.png', await png(512, true)]);
+        }
+
+        // 3. 기기 맞춤형 웹 매니페스트 파일
+        const enc = new TextEncoder();
+        const manifest = {
+          name: '단축이',
+          short_name: '단축이',
+          start_url: './',
+          scope: './',
+          display: 'standalone',
+          icons: conf.manifestIcons
+        };
+
+        files.push(['manifest.webmanifest', enc.encode(JSON.stringify(manifest, null, 2))]);
+
+        // 4. 기기 맞춤형 HTML 태그 안내
+        files.push(['웹에 넣을 설정.txt', enc.encode(conf.htmlSnippet)]);
+
+        // 5. 기기 맞춤형 적용 가이드
+        const guideTxt = `[단축이 - ${conf.label} 아이콘 적용 가이드]
+1. 압축을 푼 아이콘 이미지들(icon-*.png)과 manifest.webmanifest를 사이트 루트 디렉터리에 복사합니다.
+2. index.html의 </head> 태그 바로 위에 '웹에 넣을 설정.txt' 파일의 내용을 삽입합니다.
+3. 배포 후 브라우저에서 '${conf.finish}' 방식으로 바로가기를 생성하세요.`;
+
+        files.push(['적용 안내.txt', enc.encode(guideTxt)]);
+
+        if (downloadUrl) URL.revokeObjectURL(downloadUrl);
+        const zipBlob = makeZip(files);
+        const url = URL.createObjectURL(zipBlob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `danchugi-icons-${device}.zip`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        downloadUrl = url;
+
+        status.textContent = `🎉 ${conf.label} 아이콘 압축 파일(ZIP)이 성공적으로 다운로드되었습니다!`;
+      } catch (e) {
+        console.error(e);
+        status.textContent = '아이콘 생성 중 오류가 발생했습니다. 다시 시도해 주세요.';
+      } finally {
+        download.disabled = false;
+      }
+    };
+
+    // 📱 PWA Service Worker 등록
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(err => {
+          console.log('SW registration error:', err);
+        });
+      });
+    }
+
+    // 📱 PWA 원클릭 단축 아이콘 설치 로직
+    let deferredPrompt = null;
+    const installBanner = document.getElementById('pwa-install-banner');
+    const installBtn = document.getElementById('pwa-install-btn');
+    const iosModal = document.getElementById('ios-guide-modal');
+
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+    if (!isStandalone) {
+      // 크롬 / 엣지 / 안드로이드의 설치 이벤트 감지
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installBanner.style.display = 'flex';
+      });
+
+      // iOS 기기이거나 개발 테스트를 위해 배너 표시
+      if (isIOS) {
+        installBanner.style.display = 'flex';
+      }
+
+      installBtn.onclick = async () => {
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          if (outcome === 'accepted') {
+            installBanner.style.display = 'none';
+          }
+          deferredPrompt = null;
+        } else {
+          // iOS이거나 prompt를 지원하지 않는 브라우저 안내
+          iosModal.style.display = 'flex';
+        }
+      };
+    }
+  </script>
 </body>
 </html>
