@@ -40,11 +40,68 @@ button:hover:not(:disabled){filter:brightness(1.04)}
 details{margin-top:16px;font-size:16px;line-height:1.7}summary{font-weight:750;cursor:pointer}
 .flow{display:grid;gap:4px;text-align:center;margin:16px 0}.flow div{background:#ffffff70;border:1px solid #ffffffb8;border-radius:16px;padding:12px;overflow-wrap:anywhere}.flow span{color:#7953cc;font-size:22px}
 @media(max-width:620px){body{padding:14px 10px}.card{padding:22px 16px;border-radius:30px}h1{font-size:58px}.sub{font-size:13px;margin-bottom:18px}.devices{gap:6px;margin-bottom:18px}.devices button{gap:5px;font-size:14px;min-height:48px;padding:8px 5px}.devices svg{width:19px;height:19px}.workspace{gap:14px;grid-template-columns:1fr}.panel{min-height:230px;padding:14px;border-radius:22px}.drop{min-height:200px}.preview{width:200px}.actions{flex-direction:column;gap:10px}.btn{min-height:58px;font-size:18px;border-radius:26px}.note{font-size:12px}details{font-size:15px}}
+
+/* Match the selected glass-and-lavender reference. */
+body{padding:5vh 24px 24px;display:flex;flex-direction:column;justify-content:center;background:#dbe2fa url('./assets/floral-background.webp') center/cover fixed no-repeat}
+body:before{display:none}
+.card{width:min(1312px,86vw);padding:26px 6% 42px;border-radius:60px;border:2px solid #ffffffd9;background:linear-gradient(130deg,#dae7ff8c,#ece1ff99);box-shadow:inset 0 0 0 9px #ffffff36,0 18px 44px #8774c332;backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
+h1{margin:0 auto 22px;text-shadow:none;background:none!important;-webkit-text-fill-color:initial;font-size:inherit;line-height:1;filter:none}
+.title-image{display:block;width:clamp(260px,30vw,470px);max-width:100%;height:auto;margin:auto}
+.sub,.drop span{display:none}
+.devices{max-width:810px;gap:26px;margin:0 auto 20px}
+.devices button{min-height:72px;font-size:24px;border-radius:42px;gap:14px;background:linear-gradient(135deg,#ffffff65,#e4e2ff88)}
+.devices button[aria-pressed="true"]{background:linear-gradient(155deg,#aa9bff,#8061ff);box-shadow:inset 0 0 0 5px #ffffff48,0 8px 18px #8070d326}
+.devices svg{width:34px;height:34px}
+.workspace{gap:24px}
+.panel{padding:22px;min-height:clamp(300px,27.5vw,424px);border-radius:26px;background:#edf0ff45;border:2px solid #ffffffcf}
+.drop{min-height:100%;border-radius:24px;border:2px dashed #b8aaf28c}
+.drop svg{width:106px;height:106px;stroke-width:2.2}
+.drop strong{font-size:32px;margin:14px 0 0;color:#8b81c8}
+.preview{width:min(100%,400px);border-radius:34px;box-shadow:none}
+.actions{gap:16px;margin-top:16px}
+.btn{min-height:100px;border-radius:38px;font-size:27px;gap:16px;box-shadow:inset 0 2px 6px #ffffff8a,0 12px 20px #8879c421}
+.btn svg{width:42px;height:42px}
+.secondary{color:#583cbe;background:linear-gradient(145deg,#ffffff78,#e6dcff99)}
+.primary{background:linear-gradient(130deg,#8654fa,#b148f0)}
+.primary:disabled{opacity:.65}
+.support{width:min(1312px,86vw);margin:8px auto 0;color:#514189}
+.support>details{margin:0;padding:8px 18px;border-radius:18px;background:#f1ecffbf}
+#status{font-size:14px;margin:4px 0;min-height:0}
+.note{margin:8px 0;font-size:14px;text-align:left}
+@media(max-width:1000px){body{padding:24px}.card,.support{width:100%}.card{padding:24px 30px 30px;border-radius:42px}.title-image{width:360px}.devices{gap:12px}.devices button{font-size:20px;min-height:60px}.devices svg{width:28px;height:28px}.panel{min-height:280px;padding:18px}.drop svg{width:80px;height:80px}.drop strong{font-size:25px}.btn{font-size:20px;min-height:76px;gap:10px}.btn svg{width:30px;height:30px}}
+@media(max-width:620px){body{padding:18px 10px}.card{padding:22px 16px 24px;border-radius:32px}.title-image{width:280px}h1{margin-bottom:20px}.devices{gap:7px;margin-bottom:14px}.devices button{font-size:14px;min-height:48px;gap:5px;border-radius:26px}.devices svg{width:20px;height:20px}.workspace{grid-template-columns:1fr 1fr;gap:10px}.panel{padding:10px;min-height:150px;border-radius:20px}.drop svg{width:48px;height:48px}.drop strong{font-size:18px;margin-top:7px}.drop{padding:10px;border-radius:15px}.preview{border-radius:18px}.empty{font-size:14px}.actions{flex-direction:row;gap:7px;margin-top:12px}.btn{min-height:58px;flex-direction:column;gap:4px;font-size:12px;padding:8px 3px;border-radius:20px}.btn svg{width:24px;height:24px}.support>details{padding:8px 12px}details{font-size:14px}}
+@media(max-width:350px){.devices button{font-size:12px}.btn{font-size:11px}.title-image{width:240px}}
+
+.reference-surface{display:none}
+@media(min-width:621px){
+body{padding:0;justify-content:flex-start}
+.card{isolation:isolate;position:relative;width:min(1536px,100%);aspect-ratio:3/2;padding:0;border:0;border-radius:0;background:none;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+.reference-surface{display:block;position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+h1{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);margin:0}
+.devices{position:absolute;left:23.76%;top:26.46%;width:52.74%;height:7.04%;margin:0;max-width:none;gap:2.2%}
+.devices button{min-height:0;padding:0;border:0;background:transparent!important;box-shadow:none!important;color:transparent;font-size:clamp(14px,1.75vw,28px);border-radius:999px}
+.devices svg{opacity:0}
+.workspace{position:absolute;left:12.5%;top:35.16%;width:75%;height:41.4%;gap:1.75%}
+.panel{padding:0;min-height:0;border:0;background:transparent;border-radius:0}
+.drop{min-height:0;height:100%;border:0;background:transparent;padding:0;color:transparent}
+.drop strong,.drop svg{visibility:hidden}
+.preview{width:70.7%;border-radius:clamp(18px,2.25vw,36px)}
+.actions{position:absolute;left:12.5%;top:78.125%;width:75%;height:9.77%;margin:0;gap:1.16%}
+.btn{min-height:0;padding:0;background:transparent!important;border:0;box-shadow:none;color:transparent;border-radius:clamp(18px,3vw,42px)}
+.btn svg,.btn span{opacity:0}
+.btn:disabled{opacity:1}
+.btn:hover:not(:disabled){background:#ffffff15!important;filter:none}
+.support{width:min(1312px,86vw);margin:0 auto 16px}
+.card:not([data-current="computer"]) .devices button{background:linear-gradient(135deg,#e9e8fcef,#e2e0f5ef)!important;color:#674dce;border:2px solid #ffffffaa}
+.card:not([data-current="computer"]) .devices svg{opacity:1}
+.card:not([data-current="computer"]) .devices button[aria-pressed="true"]{background:linear-gradient(135deg,#a28aff,#7c55f5)!important;color:white;box-shadow:inset 0 0 0 3px #ffffff40!important}
+}
 </style>
 </head>
 <body>
-<main class="card">
-  <h1>단축이</h1>
+<main class="card" data-current="computer">
+<img class="reference-surface" src="./assets/reference-surface.webp" alt="" aria-hidden="true" />
+  <h1><img class="title-image" src="./assets/danchugi-title.webp" alt="단축이" /></h1>
   <p class="sub">기기를 고르고 사진을 선택하세요.</p>
   <nav class="devices" aria-label="사용할 기기">
 <button type="button" data-device="computer" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>컴퓨터용</button>
@@ -60,8 +117,8 @@ details{margin-top:16px;font-size:16px;line-height:1.7}summary{font-weight:750;c
     </div>
     <div class="panel">
       <div class="previewWrap">
-        <img id="preview" class="preview" alt="아이콘 미리보기" />
-        <div id="empty" class="empty">아이콘 미리보기</div>
+        <img id="preview" class="preview" style="display:none" alt="아이콘 미리보기" />
+        <div id="empty" class="empty" style="display:none">아이콘 미리보기</div>
       </div>
     </div>
   </section>
@@ -70,11 +127,15 @@ details{margin-top:16px;font-size:16px;line-height:1.7}summary{font-weight:750;c
     <button id="choose" class="btn secondary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5"/><path d="m4 17 5-5 4 4 3-3 5 5"/></svg><span>사진 바꾸기</span></button>
     <button id="download" class="btn primary" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 16v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/></svg><span>아이콘 받기</span></button>
   </div>
+</main>
+<section class="support" aria-label="사용 안내">
+<p id="status" role="status" aria-live="polite"></p>
+<details><summary>적용 방법</summary>
   <p class="note">복사한 사진은 ‘사진 붙여넣기’ 또는 Ctrl+V로 넣으세요.</p>
   <p class="note">여러 크기의 아이콘과 웹 적용 파일을 ZIP으로 받습니다.</p>
-<p id="status" role="status" aria-live="polite"></p>
-<details><summary>적용 방법</summary><div id="guide"></div></details>
-</main>
+<div id="guide"></div></details>
+</section>
+
 <canvas id="canvas" width="512" height="512" hidden></canvas>
 <script>
 const file=document.getElementById('file'), choose=document.getElementById('choose'), download=document.getElementById('download');
@@ -87,7 +148,7 @@ guide.innerHTML=`<p><strong>사진을 받는 것만으로 회색 아이콘이 �
 <div class="flow"><div>① 사진 선택 또는 붙여넣기</div><span>↓</span><div>② 미리보기 확인 → 아이콘 받기</div><span>↓</span><div>③ 받은 ZIP 파일의 압축 풀기</div><span>↓</span><div>④ GitHub에서 index.html이 있는 곳에<br>아이콘 그림과 manifest.webmanifest 올리기</div><span>↓</span><div>⑤ 아래 ‘설정 넣는 법’대로 설정 추가 → 배포 완료 기다리기</div><span>↓</span><div>⑥ ${finish}</div></div>
 <details><summary>설정 넣는 법 (한 번만)</summary><ol><li>압축을 푼 ‘웹에 넣을 설정.txt’를 열고 내용을 전부 복사하세요.</li><li>GitHub에서 내 웹의 index.html을 열고 연필 버튼(수정)을 누르세요.</li><li>&lt;/head&gt;를 찾아 그 바로 위에 복사한 내용을 붙여넣으세요.</li><li>Commit changes(변경 저장)를 누르세요. Vercel에 연결되어 있다면 새 배포가 끝날 때까지 기다리세요.</li></ol><p>이미 icon 또는 manifest 설정이 있으면 중복 추가 대신 기존 설정을 수정해야 합니다. 그 경우 웹 파일을 보내주시면 제가 수정해드릴 수 있어요.</p></details>
 <p>예전 회색 바로가기는 삭제하고 새로 추가하세요. 설치 메뉴의 이름은 기기마다 조금 다를 수 있어요. 이 안내는 직접 수정할 수 있는 내 웹에 적용됩니다.</p>`;}
-document.querySelectorAll('[data-device]').forEach(button=>button.onclick=()=>{device=button.dataset.device;document.querySelectorAll('[data-device]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));updateGuide();});updateGuide();
+document.querySelectorAll('[data-device]').forEach(button=>button.onclick=()=>{device=button.dataset.device;document.querySelector('.card').dataset.current=device;document.querySelectorAll('[data-device]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));updateGuide();});updateGuide();
 choose.onclick=()=>{file.value='';file.click();};
 document.querySelector('.drop').addEventListener('dragover',e=>e.preventDefault());
 document.querySelector('.drop').addEventListener('drop',e=>{e.preventDefault();if(e.dataTransfer.files[0])load(e.dataTransfer.files[0]);});
@@ -100,6 +161,9 @@ function makeZip(files){const enc=new TextEncoder(),parts=[],directory=[];let of
 function png(size,mask=false){const c=document.createElement('canvas');c.width=c.height=size;const x=c.getContext('2d');if(mask){x.fillStyle='#fff';x.fillRect(0,0,size,size);x.drawImage(canvas,size*.2,size*.2,size*.6,size*.6);}else x.drawImage(canvas,0,0,size,size);return new Promise((resolve,reject)=>c.toBlob(async b=>{if(b)resolve(new Uint8Array(await b.arrayBuffer()));else reject(new Error('PNG 생성 실패'));},'image/png'));}
 download.onclick=async()=>{if(!photo)return;download.disabled=true;try{const files=[];for(const size of[16,32,180,192,512])files.push(['icon-'+size+'.png',await png(size)]);files.push(['icon-maskable-512.png',await png(512,true)]);const enc=new TextEncoder();const manifest={name:'단축이',short_name:'단축이',start_url:'./',scope:'./',display:'standalone',icons:[{src:'icon-192.png',sizes:'192x192',type:'image/png',purpose:'any'},{src:'icon-512.png',sizes:'512x512',type:'image/png',purpose:'any'},{src:'icon-maskable-512.png',sizes:'512x512',type:'image/png',purpose:'maskable'}]};files.push(['manifest.webmanifest',enc.encode(JSON.stringify(manifest,null,2))]);files.push(['웹에 넣을 설정.txt',enc.encode('<link rel="icon" type="image/png" sizes="32x32" href="./icon-32.png">\n<link rel="icon" type="image/png" sizes="16x16" href="./icon-16.png">\n<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png">\n<link rel="manifest" href="./manifest.webmanifest">')]);files.push(['적용 안내.txt',enc.encode(guide.textContent+'\n다른 웹에 쓰려면 manifest의 이름을 그 웹 이름으로 바꾸세요. 기존 manifest가 있는 웹은 새 파일로 덮지 말고 icons 설정을 병합하세요. 기존 icon 링크도 중복되지 않도록 교체하세요. 이 파일들은 사이트 시작 페이지와 같은 폴더 기준이며, 다른 구조에서는 경로를 맞춰야 합니다. 설치 가능 여부는 브라우저와 웹 구성에 따라 다릅니다.')]);const url=URL.createObjectURL(makeZip(files)),a=document.createElement('a');a.href=url;a.download='danchugi-icons-'+device+'.zip';a.click();setTimeout(()=>URL.revokeObjectURL(url),60000);status.textContent='아이콘 묶음을 만들었습니다. 적용 방법을 펼쳐 다음 단계를 확인하세요.';}catch(e){status.textContent='아이콘 생성에 실패했습니다. 사진을 다시 선택해주세요.';}finally{download.disabled=false;}};
 
+
+// The user explicitly chose this image for publication as the app design.
+const example=new Image();example.onload=()=>{if(loadId!==0)return;ctx.drawImage(example,864,384,400,400,0,0,512,512);preview.src=canvas.toDataURL('image/png');if(window.matchMedia('(max-width:620px)').matches)preview.style.display='block';empty.style.display='none';photo=example;download.disabled=false;};example.src='./assets/reference-surface.webp';
 </script>
 </body>
 </html>
