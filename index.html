@@ -8,9 +8,9 @@
 :root{--glass:rgba(255,255,255,.55);--line:rgba(255,255,255,.72);--text:#172033;--muted:#667085;--accent:#6d5dfc}
 *{box-sizing:border-box} html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;color:var(--text)}
 body{min-height:100vh;display:grid;place-items:center;padding:24px;background:
-radial-gradient(circle at 15% 20%,rgba(113,196,255,.65),transparent 34%),
-radial-gradient(circle at 85% 25%,rgba(178,142,255,.55),transparent 36%),
-linear-gradient(135deg,#eaf7ff,#f5efff 55%,#eef8ff)}
+radial-gradient(circle at 15% 20%,rgba(113,196,255,.52),transparent 34%),
+radial-gradient(circle at 85% 25%,rgba(178,142,255,.44),transparent 36%),
+linear-gradient(135deg,rgba(234,247,255,.8),rgba(245,239,255,.8) 55%,rgba(238,248,255,.8))}
 .card{width:min(760px,100%);padding:clamp(22px,5vw,46px);border:1px solid var(--line);border-radius:28px;background:var(--glass);
 box-shadow:0 24px 70px rgba(54,63,102,.16);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px)}
 h1{margin:0;font-size:clamp(32px,6vw,52px);letter-spacing:-.05em} .sub{margin:8px 0 28px;color:var(--muted)}
@@ -20,13 +20,13 @@ h1{margin:0;font-size:clamp(32px,6vw,52px);letter-spacing:-.05em} .sub{margin:8p
 .drop strong{display:block;font-size:18px;margin-bottom:7px}.drop span{color:var(--muted);font-size:14px}
 input{display:none}.previewWrap{height:100%;display:grid;place-items:center;text-align:center}.preview{width:150px;height:150px;border-radius:32px;background:rgba(255,255,255,.7);box-shadow:0 14px 32px rgba(43,52,90,.18);object-fit:cover;display:none}
 .empty{color:var(--muted);font-size:14px}.actions{display:flex;gap:12px;margin-top:20px}.btn{appearance:none;border:0;border-radius:15px;padding:14px 18px;font-weight:750;font-size:15px;cursor:pointer;flex:1}
-.primary{background:linear-gradient(135deg,#5f73ff,#8a5cf6);color:#fff;box-shadow:0 10px 24px rgba(103,91,246,.25)}
-.secondary{background:rgba(255,255,255,.65);color:var(--text);border:1px solid rgba(255,255,255,.9)}
+.primary{background:linear-gradient(135deg,#6759df,#8d59d8);color:#fff;box-shadow:0 10px 24px rgba(103,91,246,.25)}
+.secondary{background:rgba(231,222,255,.92);color:#352365;border:1px solid rgba(126,99,204,.45)}
 .btn:disabled{opacity:.45;cursor:not-allowed}
 .note{margin:14px 2px 0;color:var(--muted);font-size:12px;text-align:center}
 @media(max-width:620px){body{padding:14px}.card{border-radius:22px;padding:22px}.workspace{grid-template-columns:1fr}.panel{min-height:220px}.drop{min-height:180px}.preview{width:132px;height:132px}.actions{flex-direction:column}}
-.devices{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}.devices button{flex:1;border:1px solid #aeb5d0;background:#fff;padding:12px;border-radius:12px;font-size:16px;min-width:90px}.devices button[aria-pressed="true"]{background:#5f59d9;color:white;border-color:#5f59d9}button,label.drop,summary{cursor:pointer}details{margin-top:20px;font-size:16px;line-height:1.7}summary{font-weight:600}#status{font-size:14px;line-height:1.6}.note{font-size:14px}.panel{min-width:0}
-</style>
+.devices{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}.devices button{flex:1;border:1px solid #aeb5d0;background:rgba(235,225,255,.92);color:#352365;padding:12px;border-radius:12px;font-size:16px;min-width:90px}.devices button[aria-pressed="true"]{background:#5f59d9;color:white;border-color:#5f59d9}button,label.drop,summary{cursor:pointer}details{margin-top:20px;font-size:16px;line-height:1.7}summary{font-weight:600}#status{font-size:14px;line-height:1.6}.note{font-size:14px}.panel{min-width:0}
+.flow{display:grid;gap:6px;margin:16px 0;text-align:center}.flow div{background:#fff;border:1px solid #d4d7ef;border-radius:12px;padding:14px;overflow-wrap:anywhere}.flow span{color:#6d5dfc;font-size:22px}.btn:focus-visible{outline:3px solid #172033;outline-offset:3px}</style>
 </head>
 <body>
 <main class="card">
@@ -52,9 +52,11 @@ input{display:none}.previewWrap{height:100%;display:grid;place-items:center;text
     </div>
   </section>
   <div class="actions">
+    <button id="paste" class="btn secondary">사진 붙여넣기</button>
     <button id="choose" class="btn secondary">사진 업로드</button>
     <button id="download" class="btn primary" disabled>아이콘 받기</button>
   </div>
+  <p class="note">복사한 사진은 ‘사진 붙여넣기’ 또는 Ctrl+V로 넣으세요.</p>
   <p class="note">여러 크기의 아이콘과 웹 적용 파일을 ZIP으로 받습니다.</p>
 <p id="status" role="status" aria-live="polite"></p>
 <details><summary>적용 방법</summary><div id="guide"></div></details>
@@ -65,12 +67,19 @@ const file=document.getElementById('file'), choose=document.getElementById('choo
 const preview=document.getElementById('preview'), empty=document.getElementById('empty'), canvas=document.getElementById('canvas'), ctx=canvas.getContext('2d');
 const status=document.getElementById('status'),guide=document.getElementById('guide');
 let device='computer',photo=null,loadId=0;
-function updateGuide(){guide.textContent='받은 ZIP을 풀고 아이콘 파일과 manifest.webmanifest를 웹의 시작 페이지와 같은 폴더에 넣으세요. 웹에 넣을 설정.txt의 내용을 시작 페이지의 <head> 안에 추가하고 다시 배포하세요. '+(device==='computer'?'크롬에서 사이트를 다시 열고 설치 메뉴가 제공되면 설치하세요. 기존 바로가기에 옛 그림이 남으면 삭제 후 다시 만드세요.':'안드로이드에서는 크롬의 홈 화면 추가를, 아이폰·아이패드에서는 사파리의 공유 → 홈 화면에 추가를 사용하세요. 기존 회색 바로가기는 삭제 후 다시 추가하세요.')+' 아이콘 받기만으로 기존 웹이나 홈 화면이 자동 변경되지는 않습니다.';}
+function updateGuide(){
+const finish=device==='computer'?'컴퓨터 크롬에서 웹 열기 → 메뉴(⋮) → 설치 또는 바로가기 만들기':device==='tablet'?'안드로이드 태블릿: 크롬 메뉴(⋮) → 홈 화면에 추가. 아이패드: 사파리 공유 → 홈 화면에 추가':'안드로이드 휴대폰: 크롬 메뉴(⋮) → 홈 화면에 추가. 아이폰: 사파리 공유 → 홈 화면에 추가';
+guide.innerHTML=`<p><strong>사진을 받는 것만으로 회색 아이콘이 바뀌지는 않아요.</strong><br>먼저 내 웹에 그림을 넣고, 바로가기를 다시 만드세요.</p>
+<div class="flow"><div>① 사진 선택 또는 붙여넣기</div><span>↓</span><div>② 미리보기 확인 → 아이콘 받기</div><span>↓</span><div>③ 받은 ZIP 파일의 압축 풀기</div><span>↓</span><div>④ GitHub에서 index.html이 있는 곳에<br>아이콘 그림과 manifest.webmanifest 올리기</div><span>↓</span><div>⑤ 아래 ‘설정 넣는 법’대로 설정 추가 → 배포 완료 기다리기</div><span>↓</span><div>⑥ ${finish}</div></div>
+<details><summary>설정 넣는 법 (한 번만)</summary><ol><li>압축을 푼 ‘웹에 넣을 설정.txt’를 열고 내용을 전부 복사하세요.</li><li>GitHub에서 내 웹의 index.html을 열고 연필 버튼(수정)을 누르세요.</li><li>&lt;/head&gt;를 찾아 그 바로 위에 복사한 내용을 붙여넣으세요.</li><li>Commit changes(변경 저장)를 누르세요. Vercel에 연결되어 있다면 새 배포가 끝날 때까지 기다리세요.</li></ol><p>이미 icon 또는 manifest 설정이 있으면 중복 추가 대신 기존 설정을 수정해야 합니다. 그 경우 웹 파일을 보내주시면 제가 수정해드릴 수 있어요.</p></details>
+<p>예전 회색 바로가기는 삭제하고 새로 추가하세요. 설치 메뉴의 이름은 기기마다 조금 다를 수 있어요. 이 안내는 직접 수정할 수 있는 내 웹에 적용됩니다.</p>`;}
 document.querySelectorAll('[data-device]').forEach(button=>button.onclick=()=>{device=button.dataset.device;document.querySelectorAll('[data-device]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));updateGuide();});updateGuide();
 choose.onclick=()=>{file.value='';file.click();};
 document.querySelector('.drop').addEventListener('dragover',e=>e.preventDefault());
 document.querySelector('.drop').addEventListener('drop',e=>{e.preventDefault();if(e.dataTransfer.files[0])load(e.dataTransfer.files[0]);});
 file.onchange=()=>file.files[0]&&load(file.files[0]);
+document.addEventListener('paste',e=>{const items=Array.from(e.clipboardData?.items||[]);const item=items.find(i=>i.type.startsWith('image/'));if(item){const blob=item.getAsFile();if(blob){e.preventDefault();load(blob);}}else{status.textContent='복사된 사진이 없습니다. 사진 자체를 복사하거나 사진 선택을 이용하세요.';}});
+document.getElementById('paste').onclick=async()=>{try{if(!navigator.clipboard?.read){status.textContent='이 브라우저에서는 붙여넣기 버튼을 사용할 수 없습니다. 컴퓨터에서는 Ctrl+V, 휴대폰·태블릿에서는 사진 선택을 이용하세요.';return;}const items=await navigator.clipboard.read();for(const item of items){const type=item.types.find(t=>t.startsWith('image/'));if(type){load(await item.getType(type));return;}}status.textContent='복사된 사진이 없습니다. 먼저 사진을 복사하세요.';}catch(e){status.textContent='사진을 가져오지 못했습니다. 붙여넣기 권한을 허용하거나 Ctrl+V 또는 사진 선택을 이용하세요.';}};
 function load(f){const id=++loadId;if(!f.type.startsWith('image/')){status.textContent='사진 파일을 선택해주세요.';return;}download.disabled=true;status.textContent='사진을 불러오는 중입니다.';const url=URL.createObjectURL(f),img=new Image();img.onload=()=>{URL.revokeObjectURL(url);if(id!==loadId)return;photo=img;const size=Math.min(img.width,img.height);ctx.clearRect(0,0,512,512);ctx.drawImage(img,(img.width-size)/2,(img.height-size)/2,size,size,0,0,512,512);preview.src=canvas.toDataURL('image/png');preview.style.display='block';empty.style.display='none';download.disabled=false;choose.textContent='사진 바꾸기';status.textContent='사진 중앙을 정사각형으로 잘랐습니다. 미리보기를 확인하세요.';};img.onerror=()=>{URL.revokeObjectURL(url);if(id!==loadId)return;download.disabled=!photo;status.textContent='이 사진을 읽을 수 없습니다. JPG 또는 PNG 사진으로 다시 선택해주세요.';};img.src=url;}
 function crc32(data){let crc=0xffffffff;for(const byte of data){crc^=byte;for(let i=0;i<8;i++)crc=(crc>>>1)^((crc&1)?0xedb88320:0);}return(crc^0xffffffff)>>>0;}
 function makeZip(files){const enc=new TextEncoder(),parts=[],directory=[];let offset=0;for(const[name,data]of files){const n=enc.encode(name),crc=crc32(data),head=new Uint8Array(30+n.length),v=new DataView(head.buffer);v.setUint32(0,0x04034b50,true);v.setUint16(4,20,true);v.setUint16(6,0x800,true);v.setUint16(12,33,true);v.setUint32(14,crc,true);v.setUint32(18,data.length,true);v.setUint32(22,data.length,true);v.setUint16(26,n.length,true);head.set(n,30);parts.push(head,data);const c=new Uint8Array(46+n.length),d=new DataView(c.buffer);d.setUint32(0,0x02014b50,true);d.setUint16(4,20,true);d.setUint16(6,20,true);d.setUint16(8,0x800,true);d.setUint16(14,33,true);d.setUint32(16,crc,true);d.setUint32(20,data.length,true);d.setUint32(24,data.length,true);d.setUint16(28,n.length,true);d.setUint32(42,offset,true);c.set(n,46);directory.push(c);offset+=head.length+data.length;}const end=new Uint8Array(22),e=new DataView(end.buffer);e.setUint32(0,0x06054b50,true);e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,directory.reduce((s,x)=>s+x.length,0),true);e.setUint32(16,offset,true);return new Blob([...parts,...directory,end],{type:'application/zip'});}
