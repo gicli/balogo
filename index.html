@@ -851,22 +851,19 @@
       <p id="status" class="status-msg" role="status" aria-live="polite">사진을 추가하여 나만의 아이콘을 만들어보세요.</p>
     </main>
 
-    <!-- 하단 글래스 가이드 카드 -->
-    <section class="guide-card" aria-label="사용 안내">
-      <details>
-        <summary>내 웹사이트에 적용하는 방법</summary>
+    <section class="guide-card" aria-label="쉬운 적용 안내">
+      <h2 style="font-size:22px;margin:0 0 12px">단축이를 홈 화면에 놓기</h2>
+      <p style="font-size:17px;line-height:1.8">① 아래 버튼을 누르세요.<br>② 설치 창이 나오면 <strong>설치</strong>를 누르세요.<br>③ 설치 창이 없으면, 나오는 안내를 따라 하세요.</p>
+      <button type="button" class="btn btn-primary" style="min-height:52px;font-size:18px" onclick="document.getElementById('pwa-install-btn').click()">홈 화면에 추가하기</button>
+      <p style="line-height:1.7">이 버튼은 <strong>단축이 앱</strong>을 추가합니다. 선택한 사진을 다른 앱의 아이콘으로 바꾸는 기능은 아닙니다.</p>
+      <details style="margin-top:20px">
+        <summary>만든 사진 아이콘을 내 웹사이트에 넣고 싶어요</summary>
         <div class="guide-content">
-          <div id="guide-device-text" style="margin-bottom:12px; font-weight:700; color:var(--primary);"></div>
-          <div class="flow-steps">
-            <div class="flow-step">① 사진 선택/붙여넣기</div>
-            <div class="flow-step">② 아이콘 미리보기 확인</div>
-            <div class="flow-step">③ ZIP 파일 다운로드</div>
-            <div class="flow-step">④ 웹 루트에 파일 업로드</div>
-            <div class="flow-step">⑤ index.html 태그 삽입</div>
-          </div>
-          <div class="guide-extra">
-            <strong>💡 웹 적용 팁:</strong> 다운로드받은 ZIP 파일 안의 <code>웹에 넣을 설정.txt</code> 내용을 복사하여 웹사이트 <code>index.html</code>의 <code>&lt;/head&gt;</code> 직전에 추가해 주시면 됩니다.
-          </div>
+          <p style="font-size:17px;line-height:1.8">① 사진을 고르세요.<br>② <strong>아이콘 받기</strong>를 누르세요.<br>③ 받은 ZIP 파일을 웹사이트를 관리하는 사람에게 전달하세요.</p>
+          <p>직접 수정하기 어려우면 아래 문장을 파일과 함께 보내세요.</p>
+          <blockquote style="margin:12px 0;line-height:1.8">“이 파일의 사진으로 웹사이트 아이콘을 바꿔주세요. 홈 화면에서도 이 아이콘이 보이게 해주세요.”</blockquote>
+          <details><summary>직접 웹사이트를 수정하는 방법</summary><p style="line-height:1.8">ZIP 압축을 풀고 아이콘 파일과 manifest.webmanifest를 웹사이트에 올립니다. ‘웹에 넣을 설정.txt’의 내용을 index.html의 &lt;/head&gt; 바로 앞에 넣습니다. 기존 manifest와 서비스 워커가 있으면 덮어쓰기 전에 확인하세요.</p></details>
+          <div id="guide-device-text" hidden></div>
         </div>
       </details>
     </section>
@@ -1270,7 +1267,7 @@ if ('serviceWorker' in navigator) {
 
 👉 끝! 이제 GitHub에 push하여 Vercel 등으로 배포하면:
 방문자나 본인이 내 웹사이트에 접속했을 때 화면 하단에 [📱 바로 설치] 버튼이 생겨서,
-클릭 한 번으로 스마트폰 홈 화면이나 PC 바탕화면에 예쁜 단축 아이콘이 즉시 설치됩니다!`;
+브라우저가 지원하면 설치 창이 나타납니다. 지원하지 않으면 브라우저 메뉴에서 홈 화면에 추가하세요.`;
 
         files.push(['적용 안내.txt', enc.encode(guideTxt)]);
 
@@ -1370,7 +1367,7 @@ if ('serviceWorker' in navigator) {
             `;
           } else {
             modalTitle.textContent = '🍎 사파리(Safari)로 열어주세요';
-            modalDesc.textContent = '아이폰 정책상 크롬/네이버에서는 홈 화면 추가가 불가합니다:';
+            modalDesc.textContent = '쉽게 따라 하려면 사파리에서 열어주세요:';
             modalBody.innerHTML = `
               <p>주소를 복사하신 후, 아이폰 기본 <strong>사파리(Safari) 앱</strong>에 붙여넣어 접속하시면 홈 화면에 바로 단축 아이콘을 만드실 수 있습니다.</p>
             `;
