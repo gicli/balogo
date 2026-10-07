@@ -1,15 +1,15 @@
 // 단축이 PWA 서비스 워커 (Service Worker)
-const CACHE_NAME = 'danchugi-cache-v1';
+const CACHE_NAME = 'danchugi-cache-20261007-dan';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
-  './manifest.webmanifest',
-  './icon-16.png',
-  './icon-32.png',
-  './icon-180.png',
-  './icon-192.png',
-  './icon-512.png',
-  './icon-maskable-512.png',
+  './manifest.webmanifest?v=20261007-dan',
+  './icon-16.png?v=20261007-dan',
+  './icon-32.png?v=20261007-dan',
+  './icon-180.png?v=20261007-dan',
+  './icon-192.png?v=20261007-dan',
+  './icon-512.png?v=20261007-dan',
+  './icon-maskable-512.png?v=20261007-dan',
   './assets/danchugi-title.webp'
 ];
 
